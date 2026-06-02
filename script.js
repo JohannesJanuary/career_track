@@ -333,6 +333,8 @@ const weeklyTasks = Object.entries(weeklyTaskPlan).flatMap(([month, weeks]) =>
   }))
 );
 
+const planMonths = Object.keys(weeklyTaskPlan);
+
 const roles = ["Business Analyst", "Data Analyst", "BI Analyst", "Sales Analytics", "Operations Analytics", "Project Analyst"];
 
 const roleFitRows = [
@@ -525,35 +527,137 @@ function renderResearchTracks() {
     .join("");
 }
 
-function renderWeeklyBoard(filter = "all") {
+function getWeekKey(weekIndex, taskIndex) {
+  return `week-${weekIndex}-${taskIndex}`;
+}
+
+function getMonthStats(month) {
+  const monthIndex = planMonths.indexOf(month);
+  const weeks = weeklyTaskPlan[month] || [];
+  const keys = weeks.flatMap((_, weekOffset) => {
+    const weekIndex = monthIndex * 4 + weekOffset;
+    return [0, 1, 2, 3].map((taskIndex) => getWeekKey(weekIndex, taskIndex));
+  });
+  const done = keys.filter((key) => localStorage.getItem(key) === "done").length;
+  const total = keys.length;
+  return { done, total, percent: total ? Math.round((done / total) * 100) : 0 };
+}
+
+function isMonthUnlocked(month) {
+  const monthIndex = planMonths.indexOf(month);
+  if (monthIndex <= 0) return true;
+  return planMonths.slice(0, monthIndex).every((previousMonth) => getMonthStats(previousMonth).percent === 100);
+}
+
+function getDefaultOpenMonth() {
+  const firstIncomplete = planMonths.find((month) => isMonthUnlocked(month) && getMonthStats(month).percent < 100);
+  return firstIncomplete || planMonths[planMonths.length - 1];
+}
+
+function renderCalendarPanel() {
+  const panel = document.querySelector("#calendarPanel");
+  if (!panel) return;
+  const today = new Date();
+  const monthName = today.toLocaleString("en-US", { month: "long" });
+  const year = today.getFullYear();
+  const first = new Date(year, today.getMonth(), 1);
+  const daysInMonth = new Date(year, today.getMonth() + 1, 0).getDate();
+  const blanks = first.getDay();
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const cells = [
+    ...dayNames.map((day) => `<strong>${day}</strong>`),
+    ...Array.from({ length: blanks }, () => "<span></span>"),
+    ...Array.from({ length: daysInMonth }, (_, index) => {
+      const day = index + 1;
+      return `<span class="${day === today.getDate() ? "today" : ""}">${day}</span>`;
+    })
+  ].join("");
+
+  const planMonth = planMonths.includes(monthName) ? monthName : getDefaultOpenMonth();
+  const stats = getMonthStats(planMonth);
+  panel.innerHTML = `
+    <article class="calendar-summary">
+      <span>Today</span>
+      <strong>${today.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</strong>
+      <p>Current plan month: <strong>${planMonth}</strong>. Monthly progress: <strong>${stats.percent}%</strong>.</p>
+    </article>
+    <article class="mini-month-calendar">
+      <div class="calendar-grid">${cells}</div>
+    </article>
+  `;
+}
+
+function renderWeeklyBoard(filter = "all", openMonth = localStorage.getItem("open-plan-month") || getDefaultOpenMonth()) {
   if (!weekGrid) return;
-  weekGrid.innerHTML = weeklyTasks
-    .map((week, weekIndex) => {
-      const tasks = filter === "all" ? week.tasks : week.tasks.filter(([type]) => type === filter);
-      if (!tasks.length) return "";
+  weekGrid.innerHTML = planMonths
+    .map((month, monthIndex) => {
+      const unlocked = isMonthUnlocked(month);
+      const stats = getMonthStats(month);
+      const isOpen = unlocked && month === openMonth;
+      const lockText = unlocked ? (stats.percent === 100 ? "Complete" : "Unlocked") : `Locked`;
       return `
-        <article class="week-card">
-          <span>${week.week}</span>
-          <h3>${week.focus}</h3>
-          <div class="week-tasks">
-            ${tasks
-              .map(([type, text], taskIndex) => {
-                const originalIndex = week.tasks.findIndex(([originalType, originalText]) => originalType === type && originalText === text);
-                const key = `week-${weekIndex}-${originalIndex >= 0 ? originalIndex : taskIndex}`;
-                const checked = localStorage.getItem(key) === "done";
-                return `
-                  <label class="week-task">
-                    <input type="checkbox" data-week-task="${key}" ${checked ? "checked" : ""} />
-                    <span><strong>${type}</strong>${text}</span>
-                  </label>
-                `;
-              })
-              .join("")}
+        <section class="month-accordion ${isOpen ? "open" : ""} ${unlocked ? "" : "locked"}">
+          <button class="month-toggle" type="button" data-month-toggle="${month}" ${unlocked ? "" : "disabled"}>
+            <span><strong>${month} 2026</strong><span>${stats.done}/${stats.total} objectives complete</span></span>
+            <em class="month-lock">${lockText}</em>
+          </button>
+          <div class="month-body-accordion">
+            <div class="month-progress-row">
+              <progress max="100" value="${stats.percent}"></progress>
+              <span>${stats.percent}% monthly progress</span>
+            </div>
+            <div class="week-grid">
+              ${(weeklyTaskPlan[month] || [])
+                .map(([focus, certification, portfolio, research, jobSearch], weekOffset) => {
+                  const weekIndex = monthIndex * 4 + weekOffset;
+                  const week = {
+                    week: `${month} W${weekOffset + 1}`,
+                    focus,
+                    tasks: [
+                      ["Certification", certification],
+                      ["Portfolio", portfolio],
+                      ["Research", research],
+                      ["Job Search", jobSearch]
+                    ]
+                  };
+                  const tasks = filter === "all" ? week.tasks : week.tasks.filter(([type]) => type === filter);
+                  if (!tasks.length) return "";
+                  return `
+                    <article class="week-card">
+                      <span>${week.week}</span>
+                      <h3>${week.focus}</h3>
+                      <div class="week-tasks">
+                        ${tasks
+                          .map(([type, text]) => {
+                            const originalIndex = week.tasks.findIndex(([originalType, originalText]) => originalType === type && originalText === text);
+                            const key = getWeekKey(weekIndex, originalIndex);
+                            const checked = localStorage.getItem(key) === "done";
+                            return `
+                              <label class="week-task">
+                                <input type="checkbox" data-week-task="${key}" ${checked ? "checked" : ""} />
+                                <span><strong>${type}</strong>${text}</span>
+                              </label>
+                            `;
+                          })
+                          .join("")}
+                      </div>
+                    </article>
+                  `;
+                })
+                .join("")}
+            </div>
           </div>
-        </article>
+        </section>
       `;
     })
     .join("");
+
+  document.querySelectorAll("[data-month-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      localStorage.setItem("open-plan-month", button.dataset.monthToggle);
+      renderWeeklyBoard(filter, button.dataset.monthToggle);
+    });
+  });
 
   document.querySelectorAll("[data-week-task]").forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
@@ -562,10 +666,16 @@ function renderWeeklyBoard(filter = "all") {
       } else {
         localStorage.removeItem(checkbox.dataset.weekTask);
       }
+      const currentOpenMonth = localStorage.getItem("open-plan-month") || openMonth;
+      const nextOpenMonth = getMonthStats(currentOpenMonth).percent === 100 ? getDefaultOpenMonth() : currentOpenMonth;
+      localStorage.setItem("open-plan-month", nextOpenMonth);
+      renderWeeklyBoard(filter, nextOpenMonth);
+      renderCalendarPanel();
       updateProgress();
     });
   });
 
+  renderCalendarPanel();
   updateProgress();
 }
 
@@ -630,17 +740,20 @@ function updateBudget() {
 
 function updateProgress() {
   const certDone = certifications.filter((cert) => localStorage.getItem(`cert-${cert.id}`) === "done").length;
-  const allWeekKeys = weeklyTasks.flatMap((week, weekIndex) => week.tasks.map((_, taskIndex) => `week-${weekIndex}-${taskIndex}`));
+  const allWeekKeys = weeklyTasks.flatMap((week, weekIndex) => week.tasks.map((_, taskIndex) => getWeekKey(weekIndex, taskIndex)));
   const weekDone = allWeekKeys.filter((key) => localStorage.getItem(key) === "done").length;
   const weeklyPercent = allWeekKeys.length ? Math.round((weekDone / allWeekKeys.length) * 100) : 0;
   const projectEstimate = Math.min(7, Math.floor(weekDone / 4));
   const overall = Math.round(((certDone / 3) * 35) + ((projectEstimate / 7) * 45) + ((weeklyPercent / 100) * 20));
+  const activeMonth = localStorage.getItem("open-plan-month") || getDefaultOpenMonth();
+  const monthStats = getMonthStats(activeMonth);
 
   if (document.querySelector("#certScore")) document.querySelector("#certScore").textContent = `${certDone}/3`;
   if (document.querySelector("#projectScore")) document.querySelector("#projectScore").textContent = `${projectEstimate}/7`;
   if (document.querySelector("#trackScore")) document.querySelector("#trackScore").textContent = `${overall}%`;
   if (document.querySelector("#jobScore")) document.querySelector("#jobScore").textContent = overall >= 70 ? "Ready" : overall >= 30 ? "Building" : "Foundation";
-  if (document.querySelector("#weeklyProgressLabel")) document.querySelector("#weeklyProgressLabel").textContent = `${weeklyPercent}% complete`;
+  if (document.querySelector("#monthlyProgressLabel")) document.querySelector("#monthlyProgressLabel").textContent = `${activeMonth}: ${monthStats.percent}% monthly goal complete`;
+  if (document.querySelector("#weeklyProgressLabel")) document.querySelector("#weeklyProgressLabel").textContent = `Overall: ${weeklyPercent}% complete`;
   if (document.querySelector("#weeklyProgressBar")) document.querySelector("#weeklyProgressBar").value = weeklyPercent;
 }
 
@@ -681,7 +794,7 @@ document.querySelectorAll(".week-filter").forEach((button) => {
   button.addEventListener("click", () => {
     document.querySelectorAll(".week-filter").forEach((tab) => tab.classList.remove("active"));
     button.classList.add("active");
-    renderWeeklyBoard(button.dataset.weekFilter);
+    renderWeeklyBoard(button.dataset.weekFilter, localStorage.getItem("open-plan-month") || getDefaultOpenMonth());
   });
 });
 

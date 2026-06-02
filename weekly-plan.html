@@ -28,7 +28,7 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">Weekly Execution Board</p>
-            <h2>Filter by track and check off the work.</h2>
+            <h2>Monthly gates keep the plan focused.</h2>
           </div>
           <div class="month-controls" aria-label="Weekly board filters">
             <button class="week-filter active" data-week-filter="all" type="button">All</button>
@@ -38,8 +38,12 @@
             <button class="week-filter" data-week-filter="Job Search" type="button">Jobs</button>
           </div>
         </div>
+        <div class="calendar-panel" id="calendarPanel"></div>
         <div class="weekly-progress">
-          <div><span id="weeklyProgressLabel">0% complete</span><strong>Progress saves locally in this browser.</strong></div>
+          <div>
+            <span id="monthlyProgressLabel">Current month: 0% complete</span>
+            <strong id="weeklyProgressLabel">Overall: 0% complete</strong>
+          </div>
           <progress id="weeklyProgressBar" max="100" value="0"></progress>
         </div>
         <div class="week-grid" id="weekGrid"></div>

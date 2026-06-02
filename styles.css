@@ -43,6 +43,10 @@ a {
   position: relative;
 }
 
+.portal-hero {
+  min-height: 78vh;
+}
+
 .topbar {
   width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
@@ -125,6 +129,77 @@ a {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 34px;
+}
+
+.portal-command {
+  margin-top: -54px;
+}
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.portal-card {
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.portal-card > span {
+  color: var(--amber);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.portal-card h3 {
+  margin: 18px 0 12px;
+  font-size: 2rem;
+}
+
+.portal-card p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.portal-card a,
+.portal-actions a {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 13px;
+  border-radius: var(--radius);
+  color: #fff;
+  background: var(--charcoal);
+  font-weight: 800;
+}
+
+.portal-card a {
+  margin-top: auto;
+}
+
+.portal-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 38px 0 76px;
+}
+
+.track-page {
+  min-height: 44vh;
+}
+
+.track-page .hero-content {
+  padding: 8vh 0 10vh;
 }
 
 .primary-action,

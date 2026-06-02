@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>28-Week Career Execution Plan | Johannes January</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero track-page">
+      <nav class="topbar">
+        <a class="brand" href="index.html"><span class="brand-mark">JJ</span><span>Career Track</span></a>
+        <div class="nav-links">
+          <a href="certifications.html">Certifications</a>
+          <a href="portfolio.html">Portfolio</a>
+          <a href="research.html">Research</a>
+        </div>
+      </nav>
+      <section class="hero-content">
+        <p class="eyebrow">June - December 2026</p>
+        <h1>Full 28-week execution calendar.</h1>
+        <p class="hero-copy">Every month has four weekly cards across certification, portfolio, research, and job search.</p>
+      </section>
+    </header>
+
+    <main>
+      <section class="weekly-board" id="weeklyBoard">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Weekly Execution Board</p>
+            <h2>Filter by track and check off the work.</h2>
+          </div>
+          <div class="month-controls" aria-label="Weekly board filters">
+            <button class="week-filter active" data-week-filter="all" type="button">All</button>
+            <button class="week-filter" data-week-filter="Certification" type="button">Cert</button>
+            <button class="week-filter" data-week-filter="Portfolio" type="button">Portfolio</button>
+            <button class="week-filter" data-week-filter="Research" type="button">Research</button>
+            <button class="week-filter" data-week-filter="Job Search" type="button">Jobs</button>
+          </div>
+        </div>
+        <div class="weekly-progress">
+          <div><span id="weeklyProgressLabel">0% complete</span><strong>Progress saves locally in this browser.</strong></div>
+          <progress id="weeklyProgressBar" max="100" value="0"></progress>
+        </div>
+        <div class="week-grid" id="weekGrid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>28-week execution calendar</p>
+      <a href="index.html">Back to portal</a>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

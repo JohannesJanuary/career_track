@@ -275,88 +275,63 @@ const researchTracks = [
   }
 ];
 
-const weeklyTasks = [
-  {
-    week: "June W1",
-    focus: "PL-300 setup",
+const weeklyTaskPlan = {
+  June: [
+    ["PL-300 setup", "Review PL-300 exam guide and install Power BI Desktop.", "Choose sales dataset and define first 6 KPIs.", "Collect 3 sources on AI-assisted BI reporting.", "Save 10 target job descriptions and extract recurring keywords."],
+    ["Data preparation", "Complete Power Query and data-cleaning practice.", "Clean sales data and document assumptions.", "Outline AI research brief.", "Update LinkedIn headline and Handshake role targets."],
+    ["Data modeling", "Practice relationships, star schema, and basic DAX.", "Create sales data model and first KPI measures.", "Draft AI reporting use-case section.", "Send 5 networking messages to alumni or analysts."],
+    ["Dashboard version 1", "Complete PL-300 visualization practice.", "Build first sales dashboard version.", "Write AI research brief introduction.", "Apply to 8 analyst roles and track responses."]
+  ],
+  July: [
+    ["DAX and storytelling", "Practice DAX measures and time intelligence.", "Add trend, product, customer, and region visuals.", "Draft AI decision-support section.", "Tailor resume for Data Analyst roles."],
+    ["Practice assessment", "Complete PL-300 practice assessment and review weak areas.", "Write KPI dictionary and dashboard assumptions.", "Create AI research visual outline.", "Send 5 networking messages."],
+    ["Publish sales project", "Rebuild weak PL-300 areas from memory.", "Publish sales dashboard project page and screenshots.", "Finalize AI research brief.", "Apply to 8-12 roles."],
+    ["PL-300 readiness", "Schedule or complete PL-300 readiness review.", "Add executive recommendation memo.", "Publish AI research LinkedIn post.", "Update portfolio and LinkedIn featured section."]
+  ],
+  August: [
+    ["CAPM launch", "Confirm CAPM eligibility and 23-hour education path.", "Begin retail operations KPI dashboard.", "Start sales/customer analytics research source list.", "Tailor resume for Business Analyst and BI Analyst roles."],
+    ["Project fundamentals", "Study project lifecycle, scope, schedule, cost, quality, and risk.", "Define branch KPIs and operations scorecard.", "Outline sales analytics research brief.", "Save 10 BA and Project Analyst job descriptions."],
+    ["Predictive methods", "Study predictive project management and change control.", "Build retail operations dashboard wireframe.", "Draft customer segmentation section.", "Send 5 project/operations analyst networking messages."],
+    ["Agile basics", "Study agile, hybrid, user stories, backlog, and sprint concepts.", "Build first retail operations dashboard version.", "Draft sales forecasting research section.", "Apply to 8-12 target roles."]
+  ],
+  September: [
+    ["Business analysis", "Review requirements, stakeholders, communication, and acceptance criteria.", "Start BA case study problem statement and stakeholder map.", "Draft key account analytics section.", "Tailor resume for Operations Analyst roles."],
+    ["BA proof", "Complete CAPM agile and business analysis review.", "Publish BA case study with process map and user stories.", "Finalize sales analytics research visual.", "Apply to 8-12 analyst roles and track follow-ups."],
+    ["Mock exam", "Complete CAPM mock exam and glossary review.", "Polish retail operations dashboard and recommendations.", "Finalize sales/customer analytics research brief.", "Send 5 networking messages."],
+    ["CAPM readiness", "Schedule or complete CAPM readiness review.", "Publish BA case study and operations dashboard links.", "Publish sales analytics LinkedIn post.", "Update resume projects section."]
+  ],
+  October: [
+    ["Tableau launch", "Review Tableau Data Analyst exam objectives.", "Build customer service/back-order analytics project.", "Start operations analytics research brief.", "Post one portfolio update on LinkedIn."],
+    ["Tableau data prep", "Practice Tableau connections, joins, and relationships.", "Clean back-order dataset and define issue categories.", "Research inventory and service bottleneck analytics.", "Tailor resume for BI Analyst roles."],
+    ["Calculations", "Practice calculated fields, table calculations, and parameters.", "Build back-order dashboard version 1.", "Draft branch benchmarking research section.", "Send 5 BI/data analyst networking messages."],
+    ["Dashboard interaction", "Practice Tableau filters, actions, tooltips, and dashboard navigation.", "Publish back-order analytics project draft.", "Draft operations analytics KPI framework.", "Apply to 8-12 target roles."]
+  ],
+  November: [
+    ["Insight writing", "Practice Tableau insight interpretation and business recommendations.", "Start predictive sales forecasting notebook.", "Draft process improvement research section.", "Tailor resume for Sales Analytics roles."],
+    ["Advanced analytics", "Complete Tableau practice exam and dashboard drills.", "Build forecasting and text analytics project pages.", "Finalize operations analytics recommendations.", "Tailor resume for Sales Analytics and Operations Analytics roles."],
+    ["Project polish", "Review Tableau weak areas and final exam checklist.", "Publish forecasting project with model metrics.", "Finalize operations analytics research brief.", "Send 5 networking messages."],
+    ["Tableau readiness", "Schedule or complete Tableau readiness review.", "Publish text analytics project draft.", "Publish operations analytics LinkedIn post.", "Apply to 8-12 roles and follow up."]
+  ],
+  December: [
+    ["Launch package", "Audit LinkedIn credentials and resume certification section.", "Polish portfolio homepage and add research links.", "Publish research and thought-leadership section.", "Prepare January application tracker and target employer list."],
+    ["AI workflow", "Complete AI for business/reporting credential or module.", "Build AI-enhanced reporting workflow project.", "Create combined research summary page.", "Tailor resume for top 3 role types."],
+    ["Portfolio QA", "Check every project page for screenshots, tools, and resume bullets.", "Finalize all portfolio deliverables and links.", "Create short presentation summary for each research topic.", "Send 10 networking/follow-up messages."],
+    ["Career launch", "Update LinkedIn licenses, Handshake, resume, and portfolio links.", "Publish career sprint summary post.", "Prepare interview stories from projects and research.", "Set January weekly application rhythm."]
+  ]
+};
+
+const weeklyTasks = Object.entries(weeklyTaskPlan).flatMap(([month, weeks]) =>
+  weeks.map(([focus, certification, portfolio, research, jobSearch], index) => ({
+    week: `${month} W${index + 1}`,
+    focus,
     tasks: [
-      ["Certification", "Review PL-300 exam guide and install Power BI Desktop."],
-      ["Portfolio", "Choose sales dataset and define first 6 KPIs."],
-      ["Research", "Collect 3 sources on AI-assisted BI reporting."],
-      ["Job Search", "Save 10 target job descriptions and extract recurring keywords."]
+      ["Certification", certification],
+      ["Portfolio", portfolio],
+      ["Research", research],
+      ["Job Search", jobSearch]
     ]
-  },
-  {
-    week: "June W2",
-    focus: "Data preparation",
-    tasks: [
-      ["Certification", "Complete Power Query and data-cleaning practice."],
-      ["Portfolio", "Clean sales data and document assumptions."],
-      ["Research", "Outline AI research brief."],
-      ["Job Search", "Update LinkedIn headline and Handshake role targets."]
-    ]
-  },
-  {
-    week: "July W1",
-    focus: "Dashboard build",
-    tasks: [
-      ["Certification", "Practice DAX measures and data modeling."],
-      ["Portfolio", "Build first Power BI dashboard version."],
-      ["Research", "Draft AI research brief introduction and use cases."],
-      ["Job Search", "Send 5 networking messages to alumni or analysts."]
-    ]
-  },
-  {
-    week: "August W1",
-    focus: "CAPM launch",
-    tasks: [
-      ["Certification", "Confirm CAPM eligibility and 23-hour education path."],
-      ["Portfolio", "Begin retail operations KPI dashboard."],
-      ["Research", "Start sales/customer analytics research source list."],
-      ["Job Search", "Tailor resume for Business Analyst and BI Analyst roles."]
-    ]
-  },
-  {
-    week: "September W2",
-    focus: "BA proof",
-    tasks: [
-      ["Certification", "Complete CAPM agile and business analysis review."],
-      ["Portfolio", "Publish BA case study with process map and user stories."],
-      ["Research", "Finalize sales analytics research visual."],
-      ["Job Search", "Apply to 8-12 analyst roles and track follow-ups."]
-    ]
-  },
-  {
-    week: "October W1",
-    focus: "Tableau launch",
-    tasks: [
-      ["Certification", "Review Tableau Data Analyst exam objectives."],
-      ["Portfolio", "Build customer service/back-order analytics project."],
-      ["Research", "Start operations analytics research brief."],
-      ["Job Search", "Post one portfolio update on LinkedIn."]
-    ]
-  },
-  {
-    week: "November W2",
-    focus: "Advanced analytics",
-    tasks: [
-      ["Certification", "Complete Tableau practice exam and dashboard drills."],
-      ["Portfolio", "Build forecasting and text analytics project pages."],
-      ["Research", "Finalize operations analytics recommendations."],
-      ["Job Search", "Tailor resume for Sales Analytics and Operations Analytics roles."]
-    ]
-  },
-  {
-    week: "December W1",
-    focus: "Launch package",
-    tasks: [
-      ["Certification", "Audit LinkedIn credentials and resume certification section."],
-      ["Portfolio", "Polish portfolio homepage and add research links."],
-      ["Research", "Publish research and thought-leadership section."],
-      ["Job Search", "Prepare January application tracker and target employer list."]
-    ]
-  }
-];
+  }))
+);
 
 const roles = ["Business Analyst", "Data Analyst", "BI Analyst", "Sales Analytics", "Operations Analytics", "Project Analyst"];
 
@@ -385,6 +360,7 @@ const roleControls = document.querySelector("#roleControls");
 const researchGrid = document.querySelector("#researchGrid");
 
 function renderTrack(trackKey) {
+  if (!trackPanel) return;
   const track = tracks[trackKey];
   trackPanel.innerHTML = `
     <div class="panel-hero">
@@ -410,6 +386,7 @@ function renderTrack(trackKey) {
 }
 
 function renderTimeline(month = "all") {
+  if (!timelineGrid) return;
   const months = month === "all" ? timeline : timeline.filter((entry) => entry.month === month);
   timelineGrid.innerHTML = months
     .map(
@@ -437,6 +414,7 @@ function renderTimeline(month = "all") {
 }
 
 function renderDeliverables() {
+  if (!deliverablesGrid) return;
   deliverablesGrid.innerHTML = deliverables
     .map(
       (item) => `
@@ -451,6 +429,7 @@ function renderDeliverables() {
 }
 
 function renderCertifications() {
+  if (!certGrid) return;
   certGrid.innerHTML = certifications
     .map((cert) => {
       const done = localStorage.getItem(`cert-${cert.id}`) === "done";
@@ -499,6 +478,7 @@ function renderCertifications() {
 }
 
 function renderMicroCredentials() {
+  if (!microGrid) return;
   microGrid.innerHTML = microCredentials
     .map(
       ([month, name, text]) => `
@@ -513,6 +493,7 @@ function renderMicroCredentials() {
 }
 
 function renderPortfolioProjects() {
+  if (!portfolioGrid) return;
   portfolioGrid.innerHTML = portfolioProjects
     .map(
       (project) => `
@@ -529,6 +510,7 @@ function renderPortfolioProjects() {
 }
 
 function renderResearchTracks() {
+  if (!researchGrid) return;
   researchGrid.innerHTML = researchTracks
     .map(
       (track) => `
@@ -544,6 +526,7 @@ function renderResearchTracks() {
 }
 
 function renderWeeklyBoard(filter = "all") {
+  if (!weekGrid) return;
   weekGrid.innerHTML = weeklyTasks
     .map((week, weekIndex) => {
       const tasks = filter === "all" ? week.tasks : week.tasks.filter(([type]) => type === filter);
@@ -587,6 +570,7 @@ function renderWeeklyBoard(filter = "all") {
 }
 
 function renderRoleMatrix(activeRole = "all") {
+  if (!roleControls || !roleMatrix) return;
   roleControls.innerHTML = `
     <button class="${activeRole === "all" ? "active" : ""}" data-role-filter="all" type="button">All Roles</button>
     ${roles.map((role) => `<button class="${activeRole === role ? "active" : ""}" data-role-filter="${role}" type="button">${role}</button>`).join("")}
@@ -652,12 +636,12 @@ function updateProgress() {
   const projectEstimate = Math.min(7, Math.floor(weekDone / 4));
   const overall = Math.round(((certDone / 3) * 35) + ((projectEstimate / 7) * 45) + ((weeklyPercent / 100) * 20));
 
-  document.querySelector("#certScore").textContent = `${certDone}/3`;
-  document.querySelector("#projectScore").textContent = `${projectEstimate}/7`;
-  document.querySelector("#trackScore").textContent = `${overall}%`;
-  document.querySelector("#jobScore").textContent = overall >= 70 ? "Ready" : overall >= 30 ? "Building" : "Foundation";
-  document.querySelector("#weeklyProgressLabel").textContent = `${weeklyPercent}% complete`;
-  document.querySelector("#weeklyProgressBar").value = weeklyPercent;
+  if (document.querySelector("#certScore")) document.querySelector("#certScore").textContent = `${certDone}/3`;
+  if (document.querySelector("#projectScore")) document.querySelector("#projectScore").textContent = `${projectEstimate}/7`;
+  if (document.querySelector("#trackScore")) document.querySelector("#trackScore").textContent = `${overall}%`;
+  if (document.querySelector("#jobScore")) document.querySelector("#jobScore").textContent = overall >= 70 ? "Ready" : overall >= 30 ? "Building" : "Foundation";
+  if (document.querySelector("#weeklyProgressLabel")) document.querySelector("#weeklyProgressLabel").textContent = `${weeklyPercent}% complete`;
+  if (document.querySelector("#weeklyProgressBar")) document.querySelector("#weeklyProgressBar").value = weeklyPercent;
 }
 
 document.querySelectorAll(".track-tab").forEach((button) => {

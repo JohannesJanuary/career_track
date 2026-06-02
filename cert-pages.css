@@ -1,0 +1,157 @@
+.brief-body {
+  background: #e9e3d7;
+}
+
+.brief-page {
+  width: min(980px, calc(100% - 32px));
+  margin: 28px auto;
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.brief-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.brief-header a,
+.brief-header button {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 800;
+}
+
+.brief-header a {
+  color: #fff;
+  background: var(--charcoal);
+}
+
+.brief-header button {
+  border: 1px solid var(--line);
+  background: #ede7dc;
+  cursor: pointer;
+}
+
+.brief-title h1 {
+  margin: 0;
+  width: min(820px, 100%);
+  font-size: clamp(2.15rem, 5vw, 4.2rem);
+  line-height: 0.98;
+}
+
+.brief-title p:not(.eyebrow) {
+  width: min(760px, 100%);
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
+.brief-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 28px 0;
+}
+
+.brief-grid article {
+  min-height: 122px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbf7ef;
+}
+
+.brief-grid strong,
+.week-list strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--charcoal);
+}
+
+.brief-grid span,
+.week-list span,
+.brief-section p {
+  color: var(--muted);
+  line-height: 1.58;
+}
+
+.brief-section {
+  margin-top: 30px;
+}
+
+.brief-section h2 {
+  margin: 0 0 14px;
+  font-size: 1.55rem;
+}
+
+.week-list {
+  display: grid;
+  gap: 10px;
+}
+
+.week-list div {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 14px;
+  padding: 14px;
+  border-left: 5px solid var(--teal);
+  background: #fbf7ef;
+}
+
+.week-list div:nth-child(2n) {
+  border-left-color: var(--amber);
+}
+
+.sources {
+  display: grid;
+  gap: 8px;
+}
+
+.sources a {
+  color: var(--cobalt);
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .brief-page {
+    padding: 22px;
+  }
+
+  .brief-header,
+  .week-list div {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .brief-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .brief-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .brief-header {
+    display: none;
+  }
+}

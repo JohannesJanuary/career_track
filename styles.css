@@ -471,6 +471,15 @@ main {
   margin-top: 24px;
 }
 
+#weekGrid {
+  display: block;
+}
+
+.month-body-accordion .week-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .cert-card,
 .micro-card,
 .portfolio-card,

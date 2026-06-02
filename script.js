@@ -575,11 +575,34 @@ function renderCalendarPanel() {
 
   const planMonth = planMonths.includes(monthName) ? monthName : getDefaultOpenMonth();
   const stats = getMonthStats(planMonth);
+  const weekOfMonth = Math.min(4, Math.max(1, Math.ceil(today.getDate() / 7)));
+  const planWeeks = weeklyTaskPlan[planMonth] || [];
+  const activeWeek = planWeeks[weekOfMonth - 1] || planWeeks[0];
+  const weekObjective = activeWeek
+    ? {
+        label: `${planMonth} Week ${weekOfMonth}: ${activeWeek[0]}`,
+        certification: activeWeek[1],
+        portfolio: activeWeek[2],
+        research: activeWeek[3],
+        jobSearch: activeWeek[4]
+      }
+    : null;
   panel.innerHTML = `
     <article class="calendar-summary">
       <span>Today</span>
       <strong>${today.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</strong>
       <p>Current plan month: <strong>${planMonth}</strong>. Monthly progress: <strong>${stats.percent}%</strong>.</p>
+      ${
+        weekObjective
+          ? `<div class="today-objective">
+              <strong>${weekObjective.label}</strong>
+              <p>${weekObjective.certification}</p>
+              <p>${weekObjective.portfolio}</p>
+              <p>${weekObjective.research}</p>
+              <p>${weekObjective.jobSearch}</p>
+            </div>`
+          : ""
+      }
     </article>
     <article class="mini-month-calendar">
       <div class="calendar-grid">${cells}</div>
